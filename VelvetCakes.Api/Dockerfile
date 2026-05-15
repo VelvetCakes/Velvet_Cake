@@ -1,10 +1,12 @@
 ﻿FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-COPY ["VelvetCakes.Api.csproj", "."]
+# Копируем весь проект (если csproj в подпапке)
+COPY VelvetCakes.Api/*.csproj ./VelvetCakes.Api/
+WORKDIR /src/VelvetCakes.Api
 RUN dotnet restore
 
-COPY . .
+COPY VelvetCakes.Api/. .
 RUN dotnet publish -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
