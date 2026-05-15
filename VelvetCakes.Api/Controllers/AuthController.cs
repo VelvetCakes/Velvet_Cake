@@ -17,61 +17,85 @@ public class AuthController : ControllerBase
 {
     private readonly ApplicationDbContext _db;
     private readonly IConfiguration _config;
+    private readonly IEmailService _emailService;
 
-    public AuthController(ApplicationDbContext db, IConfiguration config)
+    // ТОЛЬКО ОДИН КОНСТРУКТОР - правильный
+    public AuthController(ApplicationDbContext db, IConfiguration config, IEmailService emailService)
     {
         _db = db;
         _config = config;
+        _emailService = emailService;
     }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDto dto)
     {
-        if (string.IsNullOrWhiteSpace(dto.Name) || string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password))
-            return BadRequest("Все поля обязательны");
-
-        if (await _db.Users.AnyAsync(u => u.Email == dto.Email))
-            return BadRequest("Email уже используется");
-
-        var userRole = await _db.Roles.FirstOrDefaultAsync(r => r.Name == "user");
-        if (userRole == null) return StatusCode(500, "Роль 'user' не найдена");
-
-        var user = new User
-        {
-            FullName = dto.Name,
-            Email = dto.Email,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-            RoleId = userRole.Id,
-            IsEmailConfirmed = false,
-            CreatedAt = DateTime.UtcNow
-        };
-
-        _db.Users.Add(user);
-        await _db.SaveChangesAsync();
-
-        // Отправка подтверждающего письма
         try
         {
-            var confirmationLink = $"{_config["FrontendUrl"]}/confirm-email?userId={user.Id}";
-            var emailBody = $@"
-            <h2>Добро пожаловать в Velvet!</h2>
-            <p>Здравствуйте, {dto.Name}!</p>
-            <p>Вы успешно зарегистрировались в нашем магазине десертов.</p>
-            <p>Для подтверждения email перейдите по ссылке:</p>
-            <a href='{confirmationLink}'>Подтвердить email</a>
-            <p>Если вы не регистрировались, просто проигнорируйте это письмо.</p>
-            <br>
-            <p>С любовью, команда Velvet 💕</p>";
+            Console.WriteLine($"=== REGISTER ATTEMPT ===");
+            Console.WriteLine($"Email: {dto?.Email}");
+            Console.WriteLine($"Name: {dto?.Name}");
 
-            await _emailService.SendEmailAsync(dto.Email, "Добро пожаловать в Velvet!", emailBody);
+            if (string.IsNullOrWhiteSpace(dto.Name) || string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password))
+                return BadRequest("Все поля обязательны");
+
+            if (await _db.Users.AnyAsync(u => u.Email == dto.Email))
+                return BadRequest("Email уже используется");
+
+            var userRole = await _db.Roles.FirstOrDefaultAsync(r => r.Name == "user");
+            if (userRole == null) return StatusCode(500, "Роль 'user' не найдена");
+
+            var user = new User
+            {
+                FullName = dto.Name,
+                Email = dto.Email,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                RoleId = userRole.Id,
+                IsEmailConfirmed = false,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _db.Users.Add(user);
+            await _db.SaveChangesAsync();
+
+            // Отправка подтверждающего письма
+            if (_emailService != null)
+            {
+                try
+                {
+                    var frontendUrl = _config["FrontendUrl"] ?? "https://velvetcakes.github.io";
+                    var confirmationLink = $"{frontendUrl}/confirm-email?userId={user.Id}";
+                    var emailBody = $@"
+                        <h2>Добро пожаловать в Velvet!</h2>
+                        <p>Здравствуйте, {dto.Name}!</p>
+                        <p>Вы успешно зарегистрировались в нашем магазине десертов.</p>
+                        <p>Для подтверждения email перейдите по ссылке:</p>
+                        <a href='{confirmationLink}'>Подтвердить email</a>
+                        <p>Если вы не регистрировались, просто проигнорируйте это письмо.</p>
+                        <br>
+                        <p>С любовью, команда Velvet 💕</p>";
+
+                    await _emailService.SendEmailAsync(dto.Email, "Добро пожаловать в Velvet!", emailBody);
+                    Console.WriteLine($"Email sent to {dto.Email}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Email sending failed: {ex.Message}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"WARNING: _emailService is null, email not sent to {dto.Email}");
+            }
+
+            return Ok(new { message = "Регистрация успешна! На вашу почту отправлено письмо с подтверждением." });
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Email sending failed: {ex.Message}");
-            // Не возвращаем ошибку, чтобы регистрация прошла успешно
+            Console.WriteLine($"EXCEPTION in Register: {ex.Message}");
+            Console.WriteLine(ex.StackTrace);
+            return StatusCode(500, $"Internal server error: {ex.Message}");
         }
-
-        return Ok(new { message = "Регистрация успешна! На вашу почту отправлено письмо с подтверждением." });
     }
 
     [HttpPost("confirm-email")]
@@ -148,14 +172,5 @@ public class AuthController : ControllerBase
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
-    }
-
-    private readonly IEmailService _emailService;
-
-    public AuthController(ApplicationDbContext db, IConfiguration config, IEmailService emailService)
-    {
-        _db = db;
-        _config = config;
-        _emailService = emailService;
     }
 }
