@@ -29,23 +29,19 @@ builder.Services.AddDbContext<ApplicationDbContext>(opt =>
     opt.UseNpgsql(connectionString));
 
 // CORS
+// Разрешаем CORS для фронтенда
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        var frontendUrl = builder.Configuration["FrontendUrl"] ??
-            Environment.GetEnvironmentVariable("FRONTEND_URL") ??
-            "http://localhost:5500";
-
         policy.WithOrigins(
-                frontendUrl,
                 "http://localhost:5500",
                 "http://localhost:3000",
-                "https://*.onrender.com",
-                "https://*.github.io")
+                "https://VelvetCakes.github.io"
+            )
             .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowCredentials();
+            .AllowCredentials(); 
     });
 });
 
@@ -97,6 +93,7 @@ if (!Directory.Exists(uploadsPath))
     Console.WriteLine($"✅ Создана папка: {uploadsPath}");
 }
 
+app.UseCors("AllowFrontend");
 app.UseStaticFiles();
 
 if (app.Environment.IsDevelopment())
@@ -105,7 +102,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowFrontend");
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
@@ -139,4 +136,4 @@ using (var scope = app.Services.CreateScope())
 }
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-app.Run($"http://0.0.0.0:{port}");
+app.Run();
