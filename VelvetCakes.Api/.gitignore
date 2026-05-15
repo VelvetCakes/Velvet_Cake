@@ -1,0 +1,25 @@
+﻿# Папки с результатами компиляции
+bin/
+obj/
+
+# Файлы пользователя
+*.user
+*.suo
+
+# Папки Visual Studio
+.vs/
+.idea/
+
+# Базы данных (если будут локальные)
+*.db
+*.sqlite
+
+# Локальные настройки (никогда не загружайте в Git!)
+appsettings.Production.json
+appsettings.Development.json
+
+# Загруженные пользователем изображения (их сохраняем на сервере)
+wwwroot/uploads/
+
+# Логи
+*.log
