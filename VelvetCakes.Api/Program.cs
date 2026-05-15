@@ -99,49 +99,46 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-// Инициализация базы данных
+// Инициализация базы данных (БЕЗ создания таблиц)
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
     try
     {
-        // Применяем миграции или создаём базу
-        await context.Database.EnsureCreatedAsync();
-        Console.WriteLine("✅ База данных готова");
+        // Проверяем подключение
+        await context.Database.OpenConnectionAsync();
+        Console.WriteLine("✅ Подключение к базе данных успешно");
+        await context.Database.CloseConnectionAsync();
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"❌ Ошибка базы данных: {ex.Message}");
+        Console.WriteLine($"❌ Ошибка подключения: {ex.Message}");
+        throw;
     }
 
-    // Добавляем роли, если их нет
-    if (!context.Roles.Any())
+    // Добавляем роли, если таблица Roles существует и пуста
+    try
     {
-        context.Roles.AddRange(
-            new Role { Name = "user", Description = "Обычный пользователь" },
-            new Role { Name = "manager", Description = "Менеджер" },
-            new Role { Name = "pastry_chef", Description = "Кондитер" }
-        );
-        await context.SaveChangesAsync();
-        Console.WriteLine("✅ Роли созданы");
+        if (!context.Roles.Any())
+        {
+            context.Roles.AddRange(
+                new Role { Name = "user", Description = "Обычный пользователь" },
+                new Role { Name = "manager", Description = "Менеджер" },
+                new Role { Name = "pastry_chef", Description = "Кондитер" }
+            );
+            await context.SaveChangesAsync();
+            Console.WriteLine("✅ Роли добавлены");
+        }
+        else
+        {
+            Console.WriteLine("✅ Роли уже существуют");
+        }
     }
-
-    // Добавляем компоненты, если их нет
-    if (!context.Components.Any())
+    catch (Exception ex)
     {
-        context.Components.AddRange(
-            new Component { Type = "filling", Name = "Клубника", BasePricePerUnit = 300, CreatedAt = DateTime.UtcNow },
-            new Component { Type = "filling", Name = "Черника", BasePricePerUnit = 350, CreatedAt = DateTime.UtcNow },
-            new Component { Type = "filling", Name = "Шоколад", BasePricePerUnit = 400, CreatedAt = DateTime.UtcNow },
-            new Component { Type = "filling", Name = "Карамель", BasePricePerUnit = 380, CreatedAt = DateTime.UtcNow },
-            new Component { Type = "filling", Name = "Малина", BasePricePerUnit = 320, CreatedAt = DateTime.UtcNow },
-            new Component { Type = "cake_base", Name = "Ванильный бисквит", BasePricePerUnit = 200, CreatedAt = DateTime.UtcNow },
-            new Component { Type = "cake_base", Name = "Шоколадный бисквит", BasePricePerUnit = 220, CreatedAt = DateTime.UtcNow },
-            new Component { Type = "cake_base", Name = "Медовый бисквит", BasePricePerUnit = 250, CreatedAt = DateTime.UtcNow }
-        );
-        await context.SaveChangesAsync();
-        Console.WriteLine("✅ Компоненты созданы");
+        Console.WriteLine($"⚠️ Ошибка при работе с ролями: {ex.Message}");
+        Console.WriteLine("(Таблицы уже должны быть созданы вручную)");
     }
 }
 
