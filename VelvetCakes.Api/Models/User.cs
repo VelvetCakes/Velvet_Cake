@@ -17,6 +17,10 @@ public partial class User
 
     public int RoleId { get; set; }
 
+    public bool IsEmailConfirmed { get; set; } = false;
+
+    public string? EmailConfirmationToken { get; set; }
+
     public DateTime? CreatedAt { get; set; }
 
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();

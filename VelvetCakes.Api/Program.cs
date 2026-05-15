@@ -4,24 +4,22 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using VelvetCakes.Api.Models;
 using System.Text.Json.Serialization;
+using VelvetCakes.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
-// Явно указываем WebRootPath и ContentRoot
 builder.WebHost.UseWebRoot("wwwroot");
 builder.WebHost.UseContentRoot(Directory.GetCurrentDirectory());
 
 // Настройка подключения к PostgreSQL
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-// Поддержка переменной окружения DATABASE_URL (для Render)
 var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+
 if (!string.IsNullOrEmpty(databaseUrl))
 {
-    // Парсим DATABASE_URL: postgresql://user:pass@host:port/db
     var uri = new Uri(databaseUrl);
     var userInfo = uri.UserInfo.Split(':');
     connectionString = $"Host={uri.Host};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};Port={uri.Port};SSL Mode=Require;Trust Server Certificate=true";
@@ -35,8 +33,16 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        var frontendUrl = builder.Configuration["FrontendUrl"] ?? "http://localhost:5500";
-        policy.WithOrigins(frontendUrl, "http://localhost:5500", "http://localhost:3000", "https://*.onrender.com", "https://*.github.io")
+        var frontendUrl = builder.Configuration["FrontendUrl"] ??
+            Environment.GetEnvironmentVariable("FRONTEND_URL") ??
+            "http://localhost:5500";
+
+        policy.WithOrigins(
+                frontendUrl,
+                "http://localhost:5500",
+                "http://localhost:3000",
+                "https://*.onrender.com",
+                "https://*.github.io")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -44,7 +50,9 @@ builder.Services.AddCors(options =>
 });
 
 // JWT
-var jwtKey = builder.Configuration["Jwt:Key"] ?? Environment.GetEnvironmentVariable("JWT_KEY") ?? "ThisIsMyVerySecureSecretKey123!";
+var jwtKey = builder.Configuration["Jwt:Key"] ??
+             Environment.GetEnvironmentVariable("JWT__Key") ??
+             "ThisIsMyVerySecureSecretKey123!";
 
 builder.Services.AddControllers().AddJsonOptions(o =>
 {
@@ -67,7 +75,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Настройка размера файлов
+// Регистрация сервисов
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IYooKassaService, YooKassaService>();
+
 builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(options =>
 {
     options.ValueLengthLimit = int.MaxValue;
@@ -99,46 +110,31 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-// Инициализация базы данных (БЕЗ создания таблиц)
+// Проверка подключения к БД
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
     try
     {
-        // Проверяем подключение
         await context.Database.OpenConnectionAsync();
         Console.WriteLine("✅ Подключение к базе данных успешно");
+
+        // Проверяем, есть ли таблицы
+        var hasTables = await context.Database.ExecuteSqlRawAsync(@"
+            SELECT EXISTS (
+                SELECT FROM information_schema.tables 
+                WHERE table_name = 'Users'
+            );
+        ");
+
+        Console.WriteLine(hasTables > 0 ? "✅ Таблицы существуют" : "⚠️ Таблицы не найдены");
+
         await context.Database.CloseConnectionAsync();
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"❌ Ошибка подключения: {ex.Message}");
-        throw;
-    }
-
-    // Добавляем роли, если таблица Roles существует и пуста
-    try
-    {
-        if (!context.Roles.Any())
-        {
-            context.Roles.AddRange(
-                new Role { Name = "user", Description = "Обычный пользователь" },
-                new Role { Name = "manager", Description = "Менеджер" },
-                new Role { Name = "pastry_chef", Description = "Кондитер" }
-            );
-            await context.SaveChangesAsync();
-            Console.WriteLine("✅ Роли добавлены");
-        }
-        else
-        {
-            Console.WriteLine("✅ Роли уже существуют");
-        }
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"⚠️ Ошибка при работе с ролями: {ex.Message}");
-        Console.WriteLine("(Таблицы уже должны быть созданы вручную)");
+        Console.WriteLine($"❌ Ошибка подключения к БД: {ex.Message}");
     }
 }
 

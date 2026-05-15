@@ -1,0 +1,35 @@
+﻿services:
+  - type: web
+    name: velvet-cakes-api
+    runtime: image
+    repo: https://github.com/VelvetCakes/VelvetCake
+    branch: main
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: velvet-cakes-db
+          property: connectionString
+      - key: JWT__Key
+        generateValue: true
+      - key: FrontendUrl
+        value: https://VelvetCakes.github.io/VelvetCake
+      - key: EmailSettings__SmtpUser
+        value: ELINA.174@ya.ru
+      - key: EmailSettings__SmtpPass
+        value: mdwcjwwqxniesisw
+      - key: EmailSettings__FromEmail
+        value: ELINA.174@ya.ru
+      - key: YooKassa__ShopId
+        sync: false
+      - key: YooKassa__SecretKey
+        sync: false
+
+  - type: postgresql
+    name: velvet-cakes-db
+    plan: free
+    databaseName: velvetcakes
+    ipAllowList: []

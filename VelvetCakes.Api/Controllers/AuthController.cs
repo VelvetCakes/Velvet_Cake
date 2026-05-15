@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using VelvetCakes.Api.Models;
 using VelvetCakes.Api.DTOs;
+using VelvetCakes.Api.Services;
 
 namespace VelvetCakes.Api.Controllers;
 
@@ -41,12 +42,54 @@ public class AuthController : ControllerBase
             Email = dto.Email,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
             RoleId = userRole.Id,
+            IsEmailConfirmed = false,
             CreatedAt = DateTime.UtcNow
         };
 
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
-        return Ok(new { message = "Регистрация успешна!" });
+
+        // Отправка подтверждающего письма
+        try
+        {
+            var confirmationLink = $"{_config["FrontendUrl"]}/confirm-email?userId={user.Id}";
+            var emailBody = $@"
+            <h2>Добро пожаловать в Velvet!</h2>
+            <p>Здравствуйте, {dto.Name}!</p>
+            <p>Вы успешно зарегистрировались в нашем магазине десертов.</p>
+            <p>Для подтверждения email перейдите по ссылке:</p>
+            <a href='{confirmationLink}'>Подтвердить email</a>
+            <p>Если вы не регистрировались, просто проигнорируйте это письмо.</p>
+            <br>
+            <p>С любовью, команда Velvet 💕</p>";
+
+            await _emailService.SendEmailAsync(dto.Email, "Добро пожаловать в Velvet!", emailBody);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Email sending failed: {ex.Message}");
+            // Не возвращаем ошибку, чтобы регистрация прошла успешно
+        }
+
+        return Ok(new { message = "Регистрация успешна! На вашу почту отправлено письмо с подтверждением." });
+    }
+
+    [HttpPost("confirm-email")]
+    public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailDto dto)
+    {
+        var user = await _db.Users.FindAsync(dto.UserId);
+        if (user == null)
+            return BadRequest("Пользователь не найден");
+
+        user.IsEmailConfirmed = true;
+        await _db.SaveChangesAsync();
+
+        return Ok(new { message = "Email подтверждён!" });
+    }
+
+    public class ConfirmEmailDto
+    {
+        public int UserId { get; set; }
     }
 
     [HttpPost("login")]
@@ -105,5 +148,14 @@ public class AuthController : ControllerBase
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    private readonly IEmailService _emailService;
+
+    public AuthController(ApplicationDbContext db, IConfiguration config, IEmailService emailService)
+    {
+        _db = db;
+        _config = config;
+        _emailService = emailService;
     }
 }

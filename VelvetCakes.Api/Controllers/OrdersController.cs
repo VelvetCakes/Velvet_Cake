@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VelvetCakes.Api.Models;
 using VelvetCakes.Api.DTOs;
+using VelvetCakes.Api.Services;
 
 namespace VelvetCakes.Api.Controllers;
 
@@ -12,8 +13,13 @@ namespace VelvetCakes.Api.Controllers;
 public class OrdersController : ControllerBase
 {
     private readonly ApplicationDbContext _db;
+    private readonly IYooKassaService _yooKassaService;
 
-    public OrdersController(ApplicationDbContext db) => _db = db;
+    public OrdersController(ApplicationDbContext db, IYooKassaService yooKassaService)
+    {
+        _db = db;
+        _yooKassaService = yooKassaService;
+    }
 
     [HttpPost]
     [Authorize(Roles = "user")]
@@ -143,5 +149,50 @@ public class OrdersController : ControllerBase
         }
 
         return Ok(order);
+    }
+
+    [HttpPost("{id}/payment")]
+    [Authorize(Roles = "user")]
+    public async Task<IActionResult> CreatePayment(int id, [FromBody] PaymentRequestDto dto)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+            return Unauthorized();
+
+        var order = await _db.Orders.FindAsync(id);
+
+        if (order == null)
+            return NotFound("Заказ не найден");
+
+        if (order.UserId != userId)
+            return Forbid();
+
+        if (order.PaidAmount > 0)
+            return BadRequest("Заказ уже оплачен");
+
+        var paymentResponse = await _yooKassaService.CreatePaymentAsync(
+            order.TotalAmount,
+            $"Заказ #{order.Id} в Velvet",
+            dto.ReturnUrl
+        );
+
+        if (paymentResponse == null || string.IsNullOrEmpty(paymentResponse.Confirmation?.ConfirmationUrl))
+            return StatusCode(500, "Ошибка создания платежа");
+
+        // Сохраняем ID платежа в заказ (если добавите поле PaymentId в модель Order)
+        // order.PaymentId = paymentResponse.Id;
+        // await _db.SaveChangesAsync();
+
+        return Ok(new
+        {
+            paymentUrl = paymentResponse.Confirmation.ConfirmationUrl,
+            paymentId = paymentResponse.Id,
+            status = paymentResponse.Status
+        });
+    }
+
+    public class PaymentRequestDto
+    {
+        public string ReturnUrl { get; set; } = string.Empty;
     }
 }
