@@ -1,10 +1,11 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-COPY *.csproj .
+COPY VelvetCakes.Api/*.csproj ./VelvetCakes.Api/
+WORKDIR /src/VelvetCakes.Api
 RUN dotnet restore
 
-COPY . .
+COPY VelvetCakes.Api/. .
 
 RUN dotnet publish -c Release -o /app/publish
 
