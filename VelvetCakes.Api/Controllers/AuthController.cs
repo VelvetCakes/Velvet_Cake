@@ -104,7 +104,7 @@ public class AuthController : ControllerBase
         if (user == null)
             return BadRequest("Пользователь не найден");
 
-        user.IsEmailConfirmed = true;
+        //user.IsEmailConfirmed = true;
         await _db.SaveChangesAsync();
 
         return Ok(new { message = "Email подтверждён!" });
