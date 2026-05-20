@@ -30,10 +30,14 @@ public class EmailService : IEmailService
             var fromEmail = _config["EmailSettings:FromEmail"];
             var fromName = _config["EmailSettings:FromName"] ?? "Velvet Кондитерская";
 
+            var useSsl = smtpPort == 465 || smtpPort == 587;
+
             using var client = new SmtpClient(smtpServer, smtpPort);
-            client.EnableSsl = true;
+            client.EnableSsl = useSsl;
             client.UseDefaultCredentials = false;
             client.Credentials = new NetworkCredential(smtpUser, smtpPass);
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.Timeout = 10000;
 
             var message = new MailMessage
             {
@@ -44,8 +48,9 @@ public class EmailService : IEmailService
             };
             message.To.Add(to);
 
+            _logger.LogInformation($"Sending email to {to} via {smtpServer}:{smtpPort}");
             await client.SendMailAsync(message);
-            _logger.LogInformation($"Email sent to {to}");
+            _logger.LogInformation($"Email sent successfully to {to}");
         }
         catch (Exception ex)
         {
