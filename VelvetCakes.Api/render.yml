@@ -13,19 +13,19 @@
         fromDatabase:
           name: velvet-cakes-db
           property: connectionString
-      - key: JWT__Key
+      - key: SuperSecretKeyForVelvetCakes1234567890!@#$%
         generateValue: true
       - key: FrontendUrl
         value: https://VelvetCakes.github.io/VelvetCake
-      - key: EmailSettings__SmtpUser
+      - key: ELINA.174@ya.ru
         value: ELINA.174@ya.ru
-      - key: EmailSettings__SmtpPass
+      - key: mdwcjwwqxniesisw
         value: mdwcjwwqxniesisw
-      - key: EmailSettings__FromEmail
+      - key: ELINA.174@ya.ru
         value: ELINA.174@ya.ru
-      - key: YooKassa__ShopId
+      - key: 1362658
         sync: false
-      - key: YooKassa__SecretKey
+      - key: test_vS7nrD10514a97EJJ-tTu68FnV6rIQE0Jo5jshmv3EA
         sync: false
 
   - type: postgresql

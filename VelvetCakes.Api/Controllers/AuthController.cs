@@ -19,7 +19,6 @@ public class AuthController : ControllerBase
     private readonly IConfiguration _config;
     private readonly IEmailService _emailService;
 
-    // ТОЛЬКО ОДИН КОНСТРУКТОР - правильный
     public AuthController(ApplicationDbContext db, IConfiguration config, IEmailService emailService)
     {
         _db = db;
@@ -33,6 +32,7 @@ public class AuthController : ControllerBase
         try
         {
             Console.WriteLine($"=== REGISTER ATTEMPT ===");
+            Console.WriteLine($"EmailService is null: {_emailService == null}");
             Console.WriteLine($"Email: {dto?.Email}");
             Console.WriteLine($"Name: {dto?.Name}");
 
@@ -58,7 +58,6 @@ public class AuthController : ControllerBase
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
 
-            // Отправка подтверждающего письма
             if (_emailService != null)
             {
                 try

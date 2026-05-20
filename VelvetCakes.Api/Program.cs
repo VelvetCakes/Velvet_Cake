@@ -14,7 +14,6 @@ builder.Logging.AddConsole();
 builder.WebHost.UseWebRoot("wwwroot");
 builder.WebHost.UseContentRoot(Directory.GetCurrentDirectory());
 
-// Настройка подключения к PostgreSQL
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
 
@@ -22,14 +21,12 @@ if (!string.IsNullOrEmpty(databaseUrl))
 {
     var uri = new Uri(databaseUrl);
     var userInfo = uri.UserInfo.Split(':');
-    connectionString = $"Host={uri.Host};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};Port={uri.Port};SSL Mode=Require;Trust Server Certificate=true";
+    connectionString = $"Host={uri.Host};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};Port={uri.Port};SSL Mode=Require;Trust Server Certificate=true;Encoding=UTF8";
 }
 
 builder.Services.AddDbContext<ApplicationDbContext>(opt =>
     opt.UseNpgsql(connectionString));
 
-// CORS
-// Разрешаем CORS для фронтенда
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -45,7 +42,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-// JWT
 var jwtKey = builder.Configuration["Jwt:Key"] ??
              Environment.GetEnvironmentVariable("JWT__Key") ??
              "ThisIsMyVerySecureSecretKey123!";
@@ -71,7 +67,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Регистрация сервисов
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IYooKassaService, YooKassaService>();
 
@@ -83,7 +78,6 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(optio
 
 var app = builder.Build();
 
-// Создаём папку wwwroot/uploads
 var wwwrootPath = app.Environment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 var uploadsPath = Path.Combine(wwwrootPath, "uploads");
 
@@ -107,7 +101,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-// Проверка подключения к БД
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -117,7 +110,6 @@ using (var scope = app.Services.CreateScope())
         await context.Database.OpenConnectionAsync();
         Console.WriteLine("✅ Подключение к базе данных успешно");
 
-        // Проверяем, есть ли таблицы
         var hasTables = await context.Database.ExecuteSqlRawAsync(@"
             SELECT EXISTS (
                 SELECT FROM information_schema.tables 

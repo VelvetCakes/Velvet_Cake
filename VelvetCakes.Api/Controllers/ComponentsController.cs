@@ -71,7 +71,6 @@ public class ComponentsController : ControllerBase
         if (component == null)
             return NotFound(new { message = "Компонент не найден" });
 
-        // Проверяем, используется ли компонент в кастомных тортах
         var isUsed = await _db.CustomCakeComponents.AnyAsync(cc => cc.ComponentId == id);
         if (isUsed)
         {

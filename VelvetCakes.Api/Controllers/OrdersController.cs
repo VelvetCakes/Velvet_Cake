@@ -179,10 +179,6 @@ public class OrdersController : ControllerBase
         if (paymentResponse == null || string.IsNullOrEmpty(paymentResponse.Confirmation?.ConfirmationUrl))
             return StatusCode(500, "Ошибка создания платежа");
 
-        // Сохраняем ID платежа в заказ (если добавите поле PaymentId в модель Order)
-        // order.PaymentId = paymentResponse.Id;
-        // await _db.SaveChangesAsync();
-
         return Ok(new
         {
             paymentUrl = paymentResponse.Confirmation.ConfirmationUrl,

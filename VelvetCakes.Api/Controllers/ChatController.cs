@@ -17,7 +17,6 @@ public class ChatController : ControllerBase
         _db = db;
     }
 
-    // Получить чаты текущего пользователя (для пользователя - один чат, для менеджера - все)
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> GetMyChats()
@@ -45,7 +44,6 @@ public class ChatController : ControllerBase
         return Ok(chats);
     }
 
-    // Создать новый чат (только для пользователя)
     [HttpPost]
     [Authorize(Roles = "user")]
     public async Task<IActionResult> CreateChat()
@@ -71,7 +69,7 @@ public class ChatController : ControllerBase
         return Ok(chat);
     }
 
-    // Получить сообщения чата
+
     [HttpGet("{chatId}/messages")]
     [Authorize]
     public async Task<IActionResult> GetMessages(int chatId)
@@ -82,7 +80,6 @@ public class ChatController : ControllerBase
         var chat = await _db.Chats.FindAsync(chatId);
         if (chat == null) return NotFound();
 
-        // Проверка доступа
         if (userRole != "manager" && chat.UserId != userId)
             return Forbid();
 
@@ -94,7 +91,6 @@ public class ChatController : ControllerBase
         return Ok(messages);
     }
 
-    // Отправить сообщение
     [HttpPost("{chatId}/messages")]
     [Authorize]
     public async Task<IActionResult> SendMessage(int chatId, [FromBody] SendMessageDto dto)
@@ -105,7 +101,6 @@ public class ChatController : ControllerBase
         var chat = await _db.Chats.FindAsync(chatId);
         if (chat == null) return NotFound();
 
-        // Проверка доступа
         if (userRole == "manager")
         {
             if (chat.ManagerId == null)
@@ -136,7 +131,6 @@ public class ChatController : ControllerBase
         return Ok(message);
     }
 
-    // Отметить сообщения как прочитанные
     [HttpPut("{chatId}/read")]
     [Authorize]
     public async Task<IActionResult> MarkAsRead(int chatId)
