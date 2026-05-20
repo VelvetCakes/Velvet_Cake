@@ -170,26 +170,33 @@ public class OrdersController : ControllerBase
         var order = await _db.Orders.FindAsync(id);
 
         if (order == null)
-            return NotFound("Заказ не найден");
+            return NotFound(new { error = "Заказ не найден" });
 
         if (order.UserId != userId)
             return Forbid();
 
         if (order.PaidAmount > 0)
-            return BadRequest("Заказ уже оплачен");
+            return BadRequest(new { error = "Заказ уже оплачен" });
+
+        if (order.Status != "Ожидает оплаты")
+            return BadRequest(new { error = "Заказ не может быть оплачен. Текущий статус: " + order.Status });
 
         var paymentResponse = await _yooKassaService.CreatePaymentAsync(
             order.TotalAmount,
             $"Заказ #{order.Id} в Velvet",
-            dto.ReturnUrl
+            dto.ReturnUrl ?? $"{_config["FrontendUrl"]}/payment.html?orderId={order.Id}",
+            "embedded" 
         );
 
-        if (paymentResponse == null || string.IsNullOrEmpty(paymentResponse.Confirmation?.ConfirmationUrl))
-            return StatusCode(500, "Ошибка создания платежа");
+        if (paymentResponse == null || string.IsNullOrEmpty(paymentResponse.Confirmation?.ConfirmationToken))
+        {
+            _logger.LogError($"Failed to create payment for order {id}");
+            return StatusCode(500, new { error = "Ошибка создания платежа в ЮKassa" });
+        }
 
         return Ok(new
         {
-            paymentUrl = paymentResponse.Confirmation.ConfirmationUrl,
+            confirmationToken = paymentResponse.Confirmation.ConfirmationToken,
             paymentId = paymentResponse.Id,
             status = paymentResponse.Status
         });

@@ -14,6 +14,7 @@ public class YooKassaConfirmation
 {
     public string Type { get; set; } = string.Empty;
     public string ConfirmationUrl { get; set; } = string.Empty;
+    public string ConfirmationToken { get; set; } = string.Empty;
 }
 
 public class CreatePaymentRequest
@@ -38,7 +39,7 @@ public class YooKassaConfirmationData
 
 public interface IYooKassaService
 {
-    Task<YooKassaPaymentResponse?> CreatePaymentAsync(decimal amount, string description, string returnUrl);
+    Task<YooKassaPaymentResponse?> CreatePaymentAsync(decimal amount, string description, string returnUrl, string confirmationType = "redirect");
 }
 
 public class YooKassaService : IYooKassaService
@@ -60,28 +61,41 @@ public class YooKassaService : IYooKassaService
         _httpClient.BaseAddress = new Uri("https://api.yookassa.ru/v3/");
     }
 
-    public async Task<YooKassaPaymentResponse?> CreatePaymentAsync(decimal amount, string description, string returnUrl)
+    public async Task<YooKassaPaymentResponse?> CreatePaymentAsync(decimal amount, string description, string returnUrl, string confirmationType = "redirect")
     {
         try
         {
+            _logger.LogInformation($"Creating payment: amount={amount}, description={description}, returnUrl={returnUrl}, type={confirmationType}");
+
             var request = new CreatePaymentRequest
             {
                 Amount = new YooKassaAmount { Value = amount.ToString("F2"), Currency = "RUB" },
                 Description = description,
-                Confirmation = new YooKassaConfirmationData { Type = "redirect", ReturnUrl = returnUrl },
+                Confirmation = new YooKassaConfirmationData
+                {
+                    Type = confirmationType,
+                    ReturnUrl = returnUrl
+                },
                 Capture = "true"
             };
 
-            var content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
+            var jsonRequest = JsonSerializer.Serialize(request);
+            _logger.LogInformation($"Request JSON: {jsonRequest}");
+
+            var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync("payments", content);
+
+            var responseBody = await response.Content.ReadAsStringAsync();
+            _logger.LogInformation($"YooKassa response status: {response.StatusCode}");
+            _logger.LogInformation($"YooKassa response body: {responseBody}");
 
             if (response.IsSuccessStatusCode)
             {
-                var json = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<YooKassaPaymentResponse>(json);
+                var result = JsonSerializer.Deserialize<YooKassaPaymentResponse>(responseBody);
+                return result;
             }
 
-            _logger.LogError($"YooKassa error: {response.StatusCode}");
+            _logger.LogError($"YooKassa error: {response.StatusCode}, Body: {responseBody}");
             return null;
         }
         catch (Exception ex)
