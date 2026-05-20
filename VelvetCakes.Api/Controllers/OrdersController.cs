@@ -52,7 +52,8 @@ public class OrdersController : ControllerBase
         foreach (var item in dto.Items)
         {
             OrderItem orderItem;
-            if (item.ProductId.HasValue)
+
+            if (item.ProductId.HasValue && !item.IsCustom)
             {
                 orderItem = new OrderItem
                 {
@@ -68,7 +69,7 @@ public class OrdersController : ControllerBase
                 {
                     UserId = userId,
                     Name = item.Name ?? "Индивидуальный торт",
-                    Description = item.Description,
+                    Description = item.Description ?? item.CustomData?.DesignNotes,
                     Weight = item.Weight,
                     TotalPrice = item.Price,
                     DeliveryDate = DateOnly.Parse(dto.DeliveryDate),
