@@ -125,9 +125,6 @@ public class AuthController : ControllerBase
         if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
             return Unauthorized("Неверный email или пароль");
 
-        if (!user.IsEmailConfirmed)
-            return Unauthorized("Подтвердите email. На вашу почту отправлено письмо со ссылкой для подтверждения.");
-
         var token = GenerateJwtToken(user);
         return Ok(new
         {
