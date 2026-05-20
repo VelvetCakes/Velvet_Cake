@@ -58,36 +58,47 @@ public class AuthController : ControllerBase
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
 
+            bool emailSent = false;
             if (_emailService != null)
             {
                 try
                 {
                     var frontendUrl = _config["FrontendUrl"] ?? "https://velvetcakes.github.io";
-                    var confirmationLink = $"{frontendUrl}/confirm-email?userId={user.Id}";
+                    var confirmationLink = $"{frontendUrl}/confirm-email.html?userId={user.Id}";
                     var emailBody = $@"
-                        <h2>Добро пожаловать в Velvet!</h2>
+                    <html>
+                    <body style='font-family: Arial, sans-serif;'>
+                        <h2 style='color: #E85FB9;'>Добро пожаловать в Velvet!</h2>
                         <p>Здравствуйте, {dto.Name}!</p>
                         <p>Вы успешно зарегистрировались в нашем магазине десертов.</p>
                         <p>Для подтверждения email перейдите по ссылке:</p>
-                        <a href='{confirmationLink}'>Подтвердить email</a>
+                        <p><a href='{confirmationLink}' style='background: #E85FB9; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Подтвердить email</a></p>
+                        <p>Или скопируйте ссылку в браузер:<br>{confirmationLink}</p>
                         <p>Если вы не регистрировались, просто проигнорируйте это письмо.</p>
                         <br>
-                        <p>С любовью, команда Velvet 💕</p>";
+                        <p>С любовью, команда Velvet 💕</p>
+                    </body>
+                    </html>";
 
-                    await _emailService.SendEmailAsync(dto.Email, "Добро пожаловать в Velvet!", emailBody);
+                    await _emailService.SendEmailAsync(dto.Email, "Добро пожаловать в Velvet! Подтвердите email", emailBody);
+                    emailSent = true;
                     Console.WriteLine($"Email sent to {dto.Email}");
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Email sending failed: {ex.Message}");
+                    Console.WriteLine(ex.StackTrace);
                 }
+            }
+
+            if (emailSent)
+            {
+                return Ok(new { message = "Регистрация успешна! На вашу почту отправлено письмо с подтверждением." });
             }
             else
             {
-                Console.WriteLine($"WARNING: _emailService is null, email not sent to {dto.Email}");
+                return Ok(new { message = "Регистрация успешна! Но не удалось отправить письмо. Пожалуйста, свяжитесь с поддержкой.", emailError = true });
             }
-
-            return Ok(new { message = "Регистрация успешна! На вашу почту отправлено письмо с подтверждением." });
         }
         catch (Exception ex)
         {
@@ -124,6 +135,9 @@ public class AuthController : ControllerBase
 
         if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
             return Unauthorized("Неверный email или пароль");
+
+        if (!user.IsEmailConfirmed)
+            return Unauthorized("Подтвердите email. На вашу почту отправлено письмо со ссылкой для подтверждения.");
 
         var token = GenerateJwtToken(user);
         return Ok(new

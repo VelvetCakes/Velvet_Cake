@@ -5,7 +5,7 @@ namespace VelvetCakes.Api.Services;
 
 public interface IEmailService
 {
-    Task SendEmailAsync(string to, string subject, string body);
+    Task<bool> SendEmailAsync(string to, string subject, string body);
 }
 
 public class EmailService : IEmailService
@@ -19,23 +19,40 @@ public class EmailService : IEmailService
         _logger = logger;
     }
 
-    public async Task SendEmailAsync(string to, string subject, string body)
+    public async Task<bool> SendEmailAsync(string to, string subject, string body)
     {
         try
         {
             var smtpServer = _config["EmailSettings:SmtpServer"];
-            var smtpPort = int.Parse(_config["EmailSettings:SmtpPort"] ?? "587"); 
+            var smtpPort = int.Parse(_config["EmailSettings:SmtpPort"] ?? "2525");
             var smtpUser = _config["EmailSettings:SmtpUser"];
             var smtpPass = _config["EmailSettings:SmtpPass"];
             var fromEmail = _config["EmailSettings:FromEmail"];
             var fromName = _config["EmailSettings:FromName"] ?? "Velvet Кондитерская";
 
+            if (string.IsNullOrEmpty(smtpServer) || string.IsNullOrEmpty(smtpUser) || string.IsNullOrEmpty(smtpPass))
+            {
+                _logger.LogError("SMTP settings are missing");
+                return false;
+            }
+
+            _logger.LogInformation($"Sending email to {to} via {smtpServer}:{smtpPort}");
+
             using var client = new SmtpClient(smtpServer, smtpPort);
-            client.EnableSsl = true; 
+
+            if (smtpPort == 465)
+            {
+                client.EnableSsl = true;
+            }
+            else
+            {
+                client.EnableSsl = false;
+            }
+
             client.UseDefaultCredentials = false;
             client.Credentials = new NetworkCredential(smtpUser, smtpPass);
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.Timeout = 30000; 
+            client.Timeout = 30000;
 
             var message = new MailMessage
             {
@@ -46,13 +63,14 @@ public class EmailService : IEmailService
             };
             message.To.Add(new MailAddress(to));
 
-            _logger.LogInformation($"Sending email to {to} via {smtpServer}:{smtpPort} with SSL={client.EnableSsl}");
             await client.SendMailAsync(message);
             _logger.LogInformation($"Email sent successfully to {to}");
+            return true;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Failed to send email to {to}");
+            _logger.LogError(ex, $"Failed to send email to {to}: {ex.Message}");
+            return false;
         }
     }
 }
