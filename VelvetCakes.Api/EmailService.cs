@@ -44,7 +44,7 @@ public class EmailService : IEmailService
                 Body = body,
                 IsBodyHtml = true
             };
-            message.To.Add(to);
+            message.To.Add(new MailAddress(to));
 
             _logger.LogInformation($"Sending email to {to} via {smtpServer}:{smtpPort} with SSL={client.EnableSsl}");
             await client.SendMailAsync(message);

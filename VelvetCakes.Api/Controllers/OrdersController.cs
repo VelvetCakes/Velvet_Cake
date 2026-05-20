@@ -14,11 +14,19 @@ public class OrdersController : ControllerBase
 {
     private readonly ApplicationDbContext _db;
     private readonly IYooKassaService _yooKassaService;
+    private readonly IConfiguration _config;
+    private readonly ILogger<OrdersController> _logger;
 
-    public OrdersController(ApplicationDbContext db, IYooKassaService yooKassaService)
+    public OrdersController(
+        ApplicationDbContext db,
+        IYooKassaService yooKassaService,
+        IConfiguration config,
+        ILogger<OrdersController> logger)
     {
         _db = db;
         _yooKassaService = yooKassaService;
+        _config = config;
+        _logger = logger;
     }
 
     [HttpPost]
@@ -181,11 +189,13 @@ public class OrdersController : ControllerBase
         if (order.Status != "Ожидает оплаты")
             return BadRequest(new { error = "Заказ не может быть оплачен. Текущий статус: " + order.Status });
 
+        var returnUrl = dto.ReturnUrl ?? $"{_config["FrontendUrl"]}/payment.html?orderId={order.Id}";
+
         var paymentResponse = await _yooKassaService.CreatePaymentAsync(
             order.TotalAmount,
             $"Заказ #{order.Id} в Velvet",
-            dto.ReturnUrl ?? $"{_config["FrontendUrl"]}/payment.html?orderId={order.Id}",
-            "embedded" 
+            returnUrl,
+            "embedded"
         );
 
         if (paymentResponse == null || string.IsNullOrEmpty(paymentResponse.Confirmation?.ConfirmationToken))
