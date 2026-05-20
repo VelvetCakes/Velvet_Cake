@@ -32,10 +32,12 @@ public class OrdersController : ControllerBase
         var user = await _db.Users.FindAsync(userId);
         if (user == null) return Unauthorized();
 
+        var initialStatus = dto.PaymentMethod == "online" ? "Ожидает оплаты" : "Новый";
+
         var order = new Order
         {
             UserId = userId,
-            Status = "Новый",
+            Status = initialStatus,
             TotalAmount = dto.Total,
             DeliveryAddress = dto.DeliveryAddress,
             Comments = dto.Comments,
@@ -86,6 +88,11 @@ public class OrdersController : ControllerBase
             _db.OrderItems.Add(orderItem);
         }
         await _db.SaveChangesAsync();
+
+        if (dto.PaymentMethod == "online")
+        {
+            return Ok(new { order, requiresPayment = true });
+        }
 
         _db.Notifications.Add(new Notification
         {

@@ -15,6 +15,8 @@ public partial class Review
 
     public int? Rating { get; set; }
 
+    public bool IsApproved { get; set; } = false;
+
     public DateTime? CreatedAt { get; set; }
 
     public virtual User User { get; set; } = null!;

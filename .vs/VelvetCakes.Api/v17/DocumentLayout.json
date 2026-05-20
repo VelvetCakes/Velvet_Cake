@@ -3,8 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\Anjelika\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\VelvetCake\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\\u043D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\velvetcake\\velvetcakes.api\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\\u043D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\velvetcake\\velvetcakes.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\\u043D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\velvetcake\\velvetcakes.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\\u043D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\velvetcake\\velvetcakes.api\\controllers\\reviewscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\controllers\\reviewscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\\u043D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\velvetcake\\velvetcakes.api\\models\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\models\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\\u043D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\velvetcake\\velvetcakes.api\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -23,19 +39,71 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "OrdersController.cs",
+              "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\VelvetCake\\VelvetCakes.Api\\Controllers\\OrdersController.cs",
+              "RelativeDocumentMoniker": "VelvetCakes.Api\\Controllers\\OrdersController.cs",
+              "ToolTip": "C:\\Users\\Anjelika\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\VelvetCake\\VelvetCakes.Api\\Controllers\\OrdersController.cs",
+              "RelativeToolTip": "VelvetCakes.Api\\Controllers\\OrdersController.cs",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAswFwAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-20T15:14:27.442Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\VelvetCake\\VelvetCakes.Api\\appsettings.json",
+              "RelativeDocumentMoniker": "VelvetCakes.Api\\appsettings.json",
+              "ToolTip": "C:\\Users\\Anjelika\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\VelvetCake\\VelvetCakes.Api\\appsettings.json",
+              "RelativeToolTip": "VelvetCakes.Api\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-20T14:25:45.981Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ReviewsController.cs",
+              "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\VelvetCake\\VelvetCakes.Api\\Controllers\\ReviewsController.cs",
+              "RelativeDocumentMoniker": "VelvetCakes.Api\\Controllers\\ReviewsController.cs",
+              "ToolTip": "C:\\Users\\Anjelika\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\VelvetCake\\VelvetCakes.Api\\Controllers\\ReviewsController.cs",
+              "RelativeToolTip": "VelvetCakes.Api\\Controllers\\ReviewsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-20T13:49:19.182Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Review.cs",
+              "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\VelvetCake\\VelvetCakes.Api\\Models\\Review.cs",
+              "RelativeDocumentMoniker": "VelvetCakes.Api\\Models\\Review.cs",
+              "ToolTip": "C:\\Users\\Anjelika\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\VelvetCake\\VelvetCakes.Api\\Models\\Review.cs",
+              "RelativeToolTip": "VelvetCakes.Api\\Models\\Review.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-20T13:49:00.733Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\VelvetCake\\VelvetCakes.Api\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Controllers\\AuthController.cs",
               "ToolTip": "C:\\Users\\Anjelika\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\VelvetCake\\VelvetCakes.Api\\Controllers\\AuthController.cs",
               "RelativeToolTip": "VelvetCakes.Api\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAADwAAAAAAAAAAAAowGkAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAowGoAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-20T07:17:55.727Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "EmailService.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\VelvetCake\\VelvetCakes.Api\\EmailService.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\EmailService.cs",
@@ -43,8 +111,7 @@
               "RelativeToolTip": "VelvetCakes.Api\\EmailService.cs",
               "ViewState": "AgIAAAcAAAAAAAAAAAA1wB8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-20T07:07:01.029Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-20T07:07:01.029Z"
             }
           ]
         }

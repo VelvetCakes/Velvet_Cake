@@ -16,8 +16,46 @@ public class ReviewsController : ControllerBase
     public ReviewsController(ApplicationDbContext db) => _db = db;
 
     [HttpGet]
-    public async Task<IActionResult> GetAll() =>
-        Ok(await _db.Reviews.ToListAsync());
+    public async Task<IActionResult> GetAll()
+    {
+        var approvedReviews = await _db.Reviews
+            .Where(r => r.IsApproved == true)
+            .ToListAsync();
+        return Ok(approvedReviews);
+    }
+
+    [HttpGet("pending")]
+    [Authorize(Roles = "manager")]
+    public async Task<IActionResult> GetPending()
+    {
+        var pendingReviews = await _db.Reviews
+            .Where(r => r.IsApproved == false)
+            .Include(r => r.User)
+            .ToListAsync();
+        return Ok(pendingReviews);
+    }
+
+    [HttpPut("{id}/approve")]
+    [Authorize(Roles = "manager")]
+    public async Task<IActionResult> Approve(int id)
+    {
+        var review = await _db.Reviews.FindAsync(id);
+        if (review == null) return NotFound();
+
+        review.IsApproved = true;
+        await _db.SaveChangesAsync();
+
+        _db.Notifications.Add(new Notification
+        {
+            UserId = review.UserId,
+            Title = "Ваш отзыв опубликован!",
+            Text = "Спасибо за ваш отзыв! Он прошел модерацию и теперь виден на сайте.",
+            SentAt = DateTime.UtcNow
+        });
+        await _db.SaveChangesAsync();
+
+        return Ok(review);
+    }
 
     [HttpGet("my"), Authorize]
     public async Task<IActionResult> GetMy() => Ok(await _db.Reviews.Where(r => r.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value)).ToListAsync());
