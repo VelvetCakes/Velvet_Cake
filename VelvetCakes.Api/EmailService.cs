@@ -40,15 +40,7 @@ public class EmailService : IEmailService
 
             using var client = new SmtpClient(smtpServer, smtpPort);
 
-            if (smtpPort == 465)
-            {
-                client.EnableSsl = true;
-            }
-            else
-            {
-                client.EnableSsl = false;
-            }
-
+            client.EnableSsl = false;
             client.UseDefaultCredentials = false;
             client.Credentials = new NetworkCredential(smtpUser, smtpPass);
             client.DeliveryMethod = SmtpDeliveryMethod.Network;

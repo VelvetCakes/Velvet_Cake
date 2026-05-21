@@ -5,6 +5,7 @@ using System.Text;
 using VelvetCakes.Api.Models;
 using System.Text.Json.Serialization;
 using VelvetCakes.Api.Services;
+using System.Net.Sockets;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -100,6 +101,18 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+try
+{
+    using var client = new TcpClient();
+    await client.ConnectAsync("smtp.haskimail.ru", 2525);
+    Console.WriteLine("✅ SMTP server reachable on port 2525");
+    client.Close();
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"❌ SMTP server NOT reachable: {ex.Message}");
+}
 
 using (var scope = app.Services.CreateScope())
 {
