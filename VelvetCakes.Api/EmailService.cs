@@ -24,7 +24,7 @@ public class EmailService : IEmailService
         try
         {
             var smtpServer = _config["EmailSettings:SmtpServer"];
-            var smtpPort = int.Parse(_config["EmailSettings:SmtpPort"] ?? "2525");
+            var smtpPort = int.Parse(_config["EmailSettings:SmtpPort"] ?? "587");
             var smtpUser = _config["EmailSettings:SmtpUser"];
             var smtpPass = _config["EmailSettings:SmtpPass"];
             var fromEmail = _config["EmailSettings:FromEmail"];
@@ -39,8 +39,7 @@ public class EmailService : IEmailService
             _logger.LogInformation($"Sending email to {to} via {smtpServer}:{smtpPort}");
 
             using var client = new SmtpClient(smtpServer, smtpPort);
-
-            client.EnableSsl = false;
+            client.EnableSsl = true;
             client.UseDefaultCredentials = false;
             client.Credentials = new NetworkCredential(smtpUser, smtpPass);
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
@@ -55,6 +54,7 @@ public class EmailService : IEmailService
             };
             message.To.Add(new MailAddress(to));
 
+            _logger.LogInformation($"Attempting to send...");
             await client.SendMailAsync(message);
             _logger.LogInformation($"Email sent successfully to {to}");
             return true;
