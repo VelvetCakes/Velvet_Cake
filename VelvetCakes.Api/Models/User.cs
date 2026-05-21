@@ -17,7 +17,7 @@ public partial class User
 
     public int RoleId { get; set; }
 
-    public bool IsEmailConfirmed { get; set; } = false;
+    public bool IsEmailConfirmed { get; set; } = true;
 
     public string? EmailConfirmationToken { get; set; }
 
