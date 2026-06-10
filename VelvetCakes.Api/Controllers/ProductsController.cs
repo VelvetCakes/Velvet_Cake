@@ -87,7 +87,6 @@ public class ProductsController : ControllerBase
     {
         try
         {
-            // FIX: Проверяем, есть ли файл в запросе
             if (file == null)
             {
                 Console.WriteLine("UploadImage: file is null");
@@ -100,7 +99,6 @@ public class ProductsController : ControllerBase
                 return BadRequest(new { error = "Файл пуст" });
             }
 
-            // Проверка типа файла
             var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
             if (!allowedExtensions.Contains(extension))
@@ -108,13 +106,11 @@ public class ProductsController : ControllerBase
                 return BadRequest(new { error = "Неподдерживаемый формат файла. Разрешены: JPG, PNG, GIF, WEBP" });
             }
 
-            // Ограничение размера (5 MB)
             if (file.Length > 5 * 1024 * 1024)
             {
                 return BadRequest(new { error = "Файл слишком большой. Максимальный размер: 5 MB" });
             }
 
-            // Создаём директорию wwwroot/uploads если её нет
             var webRootPath = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
             var uploadsFolder = Path.Combine(webRootPath, "uploads");
 
@@ -124,13 +120,11 @@ public class ProductsController : ControllerBase
                 Console.WriteLine($"Created uploads folder: {uploadsFolder}");
             }
 
-            // Генерируем уникальное имя файла
             var fileName = $"{Guid.NewGuid():N}{extension}";
             var filePath = Path.Combine(uploadsFolder, fileName);
 
             Console.WriteLine($"Saving file to: {filePath}");
 
-            // Сохраняем файл
             await using (var stream = new FileStream(filePath, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
@@ -138,7 +132,6 @@ public class ProductsController : ControllerBase
 
             Console.WriteLine($"File saved successfully: {fileName}");
 
-            // Формируем URL
             var request = HttpContext.Request;
             var baseUrl = $"{request.Scheme}://{request.Host}";
             var imageUrl = $"{baseUrl}/uploads/{fileName}";
@@ -163,5 +156,47 @@ public class ProductsController : ControllerBase
             .Take(5)
             .ToListAsync();
         return Ok(res);
+    }
+
+    [HttpGet("popular")]
+    public async Task<IActionResult> GetPopularProducts(int limit = 1)
+    {
+        try
+        {
+            var popularProducts = await _db.OrderItems
+                .Where(oi => oi.ProductId != null)
+                .GroupBy(oi => oi.ProductId)
+                .Select(g => new
+                {
+                    ProductId = g.Key,
+                    OrderCount = g.Sum(oi => oi.Quantity)
+                })
+                .OrderByDescending(x => x.OrderCount)
+                .Take(limit)
+                .Join(_db.Products,
+                      pop => pop.ProductId,
+                      product => product.Id,
+                      (pop, product) => product)
+                .ToListAsync();
+
+            if (popularProducts == null || popularProducts.Count == 0)
+            {
+                popularProducts = await _db.Products
+                    .OrderBy(x => Guid.NewGuid())
+                    .Take(limit)
+                    .ToListAsync();
+            }
+
+            return Ok(popularProducts);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error getting popular products: {ex.Message}");
+            var randomProducts = await _db.Products
+                .OrderBy(x => Guid.NewGuid())
+                .Take(limit)
+                .ToListAsync();
+            return Ok(randomProducts);
+        }
     }
 }
