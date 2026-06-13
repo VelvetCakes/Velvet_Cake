@@ -32,9 +32,19 @@ public class ProductsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetProduct(int id)
     {
-        var product = await _db.Products.FindAsync(id);
-        if (product == null) return NotFound("Товар не найден");
-        return Ok(product);
+        try
+        {
+            var product = await _db.Products.FindAsync(id);
+            if (product == null)
+                return NotFound(new { error = "Товар не найден" });
+
+            return Ok(product);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error getting product: {ex.Message}");
+            return StatusCode(500, new { error = ex.Message });
+        }
     }
 
     [HttpPost]
@@ -54,19 +64,36 @@ public class ProductsController : ControllerBase
     [Authorize(Roles = "manager")]
     public async Task<IActionResult> Update(int id, [FromBody] Product updated)
     {
-        var existing = await _db.Products.FindAsync(id);
-        if (existing == null) return NotFound();
+        try
+        {
+            Console.WriteLine($"=== UPDATE PRODUCT {id} ===");
+            Console.WriteLine($"Received data: Name={updated?.Name}, Price={updated?.Price}");
 
-        existing.Name = updated.Name;
-        existing.Description = updated.Description;
-        existing.Price = updated.Price;
-        existing.Weight = updated.Weight;
-        existing.ImageUrl = updated.ImageUrl;
-        existing.ImageBase64 = updated.ImageBase64;  // Сохраняем Base64 изображение
-        existing.Category = updated.Category;
+            var existing = await _db.Products.FindAsync(id);
+            if (existing == null)
+            {
+                Console.WriteLine($"Product {id} not found");
+                return NotFound(new { error = "Товар не найден" });
+            }
 
-        await _db.SaveChangesAsync();
-        return Ok(existing);
+            existing.Name = updated.Name;
+            existing.Description = updated.Description;
+            existing.Price = updated.Price;
+            existing.Weight = updated.Weight;
+            existing.ImageUrl = updated.ImageUrl;
+            existing.ImageBase64 = updated.ImageBase64;
+            existing.Category = updated.Category;
+
+            await _db.SaveChangesAsync();
+            Console.WriteLine($"Product {id} updated successfully");
+
+            return Ok(existing);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating product: {ex.Message}");
+            return StatusCode(500, new { error = $"Ошибка: {ex.Message}" });
+        }
     }
 
     [HttpDelete("{id}")]

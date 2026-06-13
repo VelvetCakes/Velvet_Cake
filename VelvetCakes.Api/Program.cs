@@ -5,7 +5,6 @@ using System.Text;
 using VelvetCakes.Api.Models;
 using System.Text.Json.Serialization;
 using VelvetCakes.Api.Services;
-using System.Net.Sockets;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +13,17 @@ builder.Logging.AddConsole();
 
 builder.WebHost.UseWebRoot("wwwroot");
 builder.WebHost.UseContentRoot(Directory.GetCurrentDirectory());
+
+// === НАСТРОЙКА CORS - ИСПРАВЛЕННАЯ ===
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()      // Разрешаем любые источники для теста
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
@@ -27,21 +37,6 @@ if (!string.IsNullOrEmpty(databaseUrl))
 
 builder.Services.AddDbContext<ApplicationDbContext>(opt =>
     opt.UseNpgsql(connectionString));
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowFrontend", policy =>
-    {
-        policy.WithOrigins(
-                "http://localhost:5500",
-                "http://localhost:3000",
-                "https://VelvetCakes.github.io"
-            )
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials(); 
-    });
-});
 
 var jwtKey = builder.Configuration["Jwt:Key"] ??
              Environment.GetEnvironmentVariable("JWT__Key") ??
@@ -79,6 +74,9 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(optio
 
 var app = builder.Build();
 
+// === ИСПОЛЬЗУЕМ CORS ПЕРЕД ДРУГИМИ МИДЛВЕРАМИ ===
+app.UseCors("AllowAll");
+
 var wwwrootPath = app.Environment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 var uploadsPath = Path.Combine(wwwrootPath, "uploads");
 
@@ -88,7 +86,6 @@ if (!Directory.Exists(uploadsPath))
     Console.WriteLine($"✅ Создана папка: {uploadsPath}");
 }
 
-app.UseCors("AllowFrontend");
 app.UseStaticFiles();
 
 if (app.Environment.IsDevelopment())
@@ -97,41 +94,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-try
-{
-    using var client = new TcpClient();
-    await client.ConnectAsync("smtp.haskimail.ru", 2525);
-    Console.WriteLine("✅ SMTP server reachable on port 2525");
-    client.Close();
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"❌ SMTP server NOT reachable: {ex.Message}");
-}
-
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
     try
     {
         await context.Database.OpenConnectionAsync();
         Console.WriteLine("✅ Подключение к базе данных успешно");
-
-        var hasTables = await context.Database.ExecuteSqlRawAsync(@"
-            SELECT EXISTS (
-                SELECT FROM information_schema.tables 
-                WHERE table_name = 'Users'
-            );
-        ");
-
-        Console.WriteLine(hasTables > 0 ? "✅ Таблицы существуют" : "⚠️ Таблицы не найдены");
-
         await context.Database.CloseConnectionAsync();
     }
     catch (Exception ex)
