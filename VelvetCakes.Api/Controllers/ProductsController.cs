@@ -51,13 +51,40 @@ public class ProductsController : ControllerBase
     [Authorize(Roles = "manager")]
     public async Task<IActionResult> Create([FromBody] Product product)
     {
-        if (string.IsNullOrWhiteSpace(product.Name))
-            return BadRequest("Название товара обязательно");
+        try
+        {
+            Console.WriteLine($"=== CREATE PRODUCT ===");
+            Console.WriteLine($"Name: {product.Name}, Price: {product.Price}");
+            Console.WriteLine($"ImageBase64 length: {product.ImageBase64?.Length ?? 0}");
 
-        product.CreatedAt = DateTime.UtcNow;
-        _db.Products.Add(product);
-        await _db.SaveChangesAsync();
-        return Ok(product);
+            if (string.IsNullOrWhiteSpace(product.Name))
+                return BadRequest(new { error = "Название товара обязательно" });
+
+            product.CreatedAt = DateTime.UtcNow;
+
+            // Если есть Base64 и он слишком большой, обрезаем (опционально)
+            if (product.ImageBase64 != null && product.ImageBase64.Length > 1000000)
+            {
+                Console.WriteLine($"Warning: ImageBase64 is large ({product.ImageBase64.Length} chars)");
+            }
+
+            _db.Products.Add(product);
+            await _db.SaveChangesAsync();
+
+            Console.WriteLine($"Product created with ID: {product.Id}");
+            return Ok(product);
+        }
+        catch (DbUpdateException dbEx)
+        {
+            Console.WriteLine($"DB Error: {dbEx.InnerException?.Message ?? dbEx.Message}");
+            return StatusCode(500, new { error = $"Ошибка базы данных: {dbEx.InnerException?.Message ?? dbEx.Message}" });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error creating product: {ex.Message}");
+            Console.WriteLine(ex.StackTrace);
+            return StatusCode(500, new { error = $"Ошибка: {ex.Message}" });
+        }
     }
 
     [HttpPut("{id}")]
@@ -68,6 +95,7 @@ public class ProductsController : ControllerBase
         {
             Console.WriteLine($"=== UPDATE PRODUCT {id} ===");
             Console.WriteLine($"Received data: Name={updated?.Name}, Price={updated?.Price}");
+            Console.WriteLine($"ImageBase64 length: {updated?.ImageBase64?.Length ?? 0}");
 
             var existing = await _db.Products.FindAsync(id);
             if (existing == null)
@@ -76,22 +104,41 @@ public class ProductsController : ControllerBase
                 return NotFound(new { error = "Товар не найден" });
             }
 
-            existing.Name = updated.Name;
-            existing.Description = updated.Description;
+            // Обновляем поля по одному с проверкой
+            existing.Name = updated.Name ?? existing.Name;
+            existing.Description = updated.Description ?? existing.Description;
             existing.Price = updated.Price;
-            existing.Weight = updated.Weight;
-            existing.ImageUrl = updated.ImageUrl;
-            existing.ImageBase64 = updated.ImageBase64;
-            existing.Category = updated.Category;
+            existing.Weight = updated.Weight ?? existing.Weight;
+            existing.Category = updated.Category ?? existing.Category;
+
+            // Обработка изображения - если пришёл новый Base64, сохраняем его
+            if (!string.IsNullOrEmpty(updated.ImageBase64))
+            {
+                existing.ImageBase64 = updated.ImageBase64;
+                existing.ImageUrl = null; // Очищаем старый URL при сохранении Base64
+                Console.WriteLine($"ImageBase64 saved, length: {existing.ImageBase64.Length}");
+            }
+            else if (!string.IsNullOrEmpty(updated.ImageUrl))
+            {
+                existing.ImageUrl = updated.ImageUrl;
+                existing.ImageBase64 = null; // Очищаем Base64 при сохранении URL
+                Console.WriteLine($"ImageUrl saved: {existing.ImageUrl}");
+            }
 
             await _db.SaveChangesAsync();
             Console.WriteLine($"Product {id} updated successfully");
 
             return Ok(existing);
         }
+        catch (DbUpdateException dbEx)
+        {
+            Console.WriteLine($"DB Error: {dbEx.InnerException?.Message ?? dbEx.Message}");
+            return StatusCode(500, new { error = $"Ошибка базы данных: {dbEx.InnerException?.Message ?? dbEx.Message}" });
+        }
         catch (Exception ex)
         {
             Console.WriteLine($"Error updating product: {ex.Message}");
+            Console.WriteLine(ex.StackTrace);
             return StatusCode(500, new { error = $"Ошибка: {ex.Message}" });
         }
     }
