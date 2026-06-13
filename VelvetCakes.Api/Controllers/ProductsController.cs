@@ -62,6 +62,7 @@ public class ProductsController : ControllerBase
         existing.Price = updated.Price;
         existing.Weight = updated.Weight;
         existing.ImageUrl = updated.ImageUrl;
+        existing.ImageBase64 = updated.ImageBase64;  // Сохраняем Base64 изображение
         existing.Category = updated.Category;
 
         await _db.SaveChangesAsync();
@@ -87,61 +88,34 @@ public class ProductsController : ControllerBase
     {
         try
         {
-            if (file == null)
-            {
-                Console.WriteLine("UploadImage: file is null");
+            if (file == null || file.Length == 0)
                 return BadRequest(new { error = "Файл не выбран" });
-            }
 
-            if (file.Length == 0)
-            {
-                Console.WriteLine("UploadImage: file is empty");
-                return BadRequest(new { error = "Файл пуст" });
-            }
-
+            // Проверка типа файла
             var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
             if (!allowedExtensions.Contains(extension))
-            {
                 return BadRequest(new { error = "Неподдерживаемый формат файла. Разрешены: JPG, PNG, GIF, WEBP" });
-            }
 
+            // Ограничение размера (5 MB)
             if (file.Length > 5 * 1024 * 1024)
-            {
                 return BadRequest(new { error = "Файл слишком большой. Максимальный размер: 5 MB" });
-            }
 
-            var webRootPath = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-            var uploadsFolder = Path.Combine(webRootPath, "uploads");
+            // Конвертируем изображение в Base64
+            using var memoryStream = new MemoryStream();
+            await file.CopyToAsync(memoryStream);
+            var imageBytes = memoryStream.ToArray();
+            var base64String = Convert.ToBase64String(imageBytes);
 
-            if (!Directory.Exists(uploadsFolder))
-            {
-                Directory.CreateDirectory(uploadsFolder);
-                Console.WriteLine($"Created uploads folder: {uploadsFolder}");
-            }
+            // Определяем MIME тип
+            var mimeType = file.ContentType;
+            var dataUrl = $"data:{mimeType};base64,{base64String}";
 
-            var fileName = $"{Guid.NewGuid():N}{extension}";
-            var filePath = Path.Combine(uploadsFolder, fileName);
-
-            Console.WriteLine($"Saving file to: {filePath}");
-
-            await using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-
-            Console.WriteLine($"File saved successfully: {fileName}");
-
-            var request = HttpContext.Request;
-            var baseUrl = $"{request.Scheme}://{request.Host}";
-            var imageUrl = $"{baseUrl}/uploads/{fileName}";
-
-            return Ok(new { url = imageUrl });
+            return Ok(new { url = dataUrl, base64 = base64String, mimeType = mimeType });
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Ошибка загрузки изображения: {ex.Message}");
-            Console.WriteLine(ex.StackTrace);
             return StatusCode(500, new { error = $"Ошибка сервера: {ex.Message}" });
         }
     }

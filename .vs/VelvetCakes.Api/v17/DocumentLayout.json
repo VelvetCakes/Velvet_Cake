@@ -64,7 +64,7 @@
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Controllers\\ProductsController.cs",
               "ToolTip": "C:\\Users\\Anjelika\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\VelvetCake\\VelvetCakes.Api\\Controllers\\ProductsController.cs",
               "RelativeToolTip": "VelvetCakes.Api\\Controllers\\ProductsController.cs",
-              "ViewState": "AgIAAIkAAAAAAAAAAADwv6MAAAALAAAAAAAAAA==",
+              "ViewState": "AgIAAHIAAAAAAAAAAAAUwK8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-06-10T15:16:51.947Z",
               "EditorCaption": ""
@@ -163,8 +163,7 @@
               "RelativeToolTip": "VelvetCakes.Api\\EmailService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-20T07:07:01.029Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-20T07:07:01.029Z"
             },
             {
               "$type": "Document",

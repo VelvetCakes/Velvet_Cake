@@ -17,6 +17,8 @@ public partial class Product
 
     public string? ImageUrl { get; set; }
 
+    public string? ImageBase64 { get; set; }
+
     public string Category { get; set; } = null!;
 
     public DateTime? CreatedAt { get; set; }
