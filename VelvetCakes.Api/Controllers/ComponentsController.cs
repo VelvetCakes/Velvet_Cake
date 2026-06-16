@@ -32,7 +32,8 @@ public class ComponentsController : ControllerBase
         {
             Type = "filling",
             Name = dto.Name.Trim(),
-            BasePricePerUnit = 300,
+            BasePricePerUnit = dto.Price ?? 300,
+            IsFirstFree = dto.IsFirstFree ?? true,
             IsSeasonal = false,
             CreatedAt = DateTime.UtcNow
         };
@@ -53,7 +54,8 @@ public class ComponentsController : ControllerBase
         {
             Type = "cake_base",
             Name = dto.Name.Trim(),
-            BasePricePerUnit = 200,
+            BasePricePerUnit = dto.Price ?? 200,
+            IsFirstFree = dto.IsFirstFree ?? true,
             IsSeasonal = false,
             CreatedAt = DateTime.UtcNow
         };
@@ -61,6 +63,24 @@ public class ComponentsController : ControllerBase
         _db.Components.Add(component);
         await _db.SaveChangesAsync();
         return Ok(component);
+    }
+
+    [HttpPut("{id}")]
+    [Authorize(Roles = "manager")]
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateComponentDto dto)
+    {
+        var component = await _db.Components.FindAsync(id);
+        if (component == null)
+            return NotFound(new { message = "Компонент не найден" });
+
+        if (!string.IsNullOrWhiteSpace(dto.Name))
+            component.Name = dto.Name;
+
+        component.BasePricePerUnit = dto.BasePricePerUnit;
+        component.IsFirstFree = dto.IsFirstFree;
+
+        await _db.SaveChangesAsync();
+        return Ok(new { message = "Компонент обновлён", component });
     }
 
     [HttpDelete("{id}")]
@@ -91,4 +111,13 @@ public class ComponentsController : ControllerBase
 public class ComponentNameDto
 {
     public string Name { get; set; } = string.Empty;
+    public decimal? Price { get; set; }
+    public bool? IsFirstFree { get; set; }
+}
+
+public class UpdateComponentDto
+{
+    public string? Name { get; set; }
+    public decimal BasePricePerUnit { get; set; }
+    public bool IsFirstFree { get; set; }
 }

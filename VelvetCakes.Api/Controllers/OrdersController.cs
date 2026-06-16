@@ -40,13 +40,15 @@ public class OrdersController : ControllerBase
         var user = await _db.Users.FindAsync(userId);
         if (user == null) return Unauthorized();
 
+        decimal totalWithDelivery = dto.Total;
+
         var initialStatus = dto.PaymentMethod == "online" ? "Ожидает оплаты" : "Новый";
 
         var order = new Order
         {
             UserId = userId,
             Status = initialStatus,
-            TotalAmount = dto.Total,
+            TotalAmount = totalWithDelivery,
             DeliveryAddress = dto.DeliveryAddress,
             Comments = dto.Comments,
             DesiredDeliveryDate = DateOnly.Parse(dto.DeliveryDate),
@@ -107,7 +109,7 @@ public class OrdersController : ControllerBase
         {
             UserId = userId,
             Title = $"Заказ №{order.Id} принят",
-            Text = $"Ваш заказ на сумму {dto.Total} ₽ принят в работу. Статус: \"Новый\".",
+            Text = $"Ваш заказ на сумму {totalWithDelivery} ₽ принят в работу. Статус: \"Новый\".",
             SentAt = DateTime.UtcNow
         });
         await _db.SaveChangesAsync();
@@ -125,6 +127,7 @@ public class OrdersController : ControllerBase
                 .ThenInclude(oi => oi.Product)
             .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.CustomCake)
+            .OrderByDescending(o => o.CreatedAt)
             .ToListAsync();
         return Ok(orders);
     }
@@ -133,7 +136,14 @@ public class OrdersController : ControllerBase
     public async Task<IActionResult> GetMy()
     {
         var uid = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-        return Ok(await _db.Orders.Where(o => o.UserId == uid).Include(o => o.OrderItems).ThenInclude(i => i.Product).ToListAsync());
+        return Ok(await _db.Orders
+            .Where(o => o.UserId == uid)
+            .Include(o => o.OrderItems)
+                .ThenInclude(i => i.Product)
+            .Include(o => o.OrderItems)
+                .ThenInclude(i => i.CustomCake)
+            .OrderByDescending(o => o.CreatedAt)
+            .ToListAsync());
     }
 
     [HttpPut("{id}/status")]

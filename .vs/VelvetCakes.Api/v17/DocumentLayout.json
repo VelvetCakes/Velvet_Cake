@@ -3,8 +3,36 @@
   "WorkspaceRootPath": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\dtos\\orderdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\dtos\\orderdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\controllers\\componentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\controllers\\componentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\controllers\\reviewscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\controllers\\reviewscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\models\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\models\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\models\\component.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\models\\component.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\dtos\\reviewdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\dtos\\reviewdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -13,10 +41,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -29,22 +53,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\yookassaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\yookassaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\dtos\\orderdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\dtos\\orderdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\controllers\\reviewscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\controllers\\reviewscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\models\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\models\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -54,24 +62,59 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
+              "Title": "ComponentsController.cs",
+              "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Controllers\\ComponentsController.cs",
+              "RelativeDocumentMoniker": "VelvetCakes.Api\\Controllers\\ComponentsController.cs",
+              "ToolTip": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Controllers\\ComponentsController.cs",
+              "RelativeToolTip": "VelvetCakes.Api\\Controllers\\ComponentsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-16T12:28:49.727Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Component.cs",
+              "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Models\\Component.cs",
+              "RelativeDocumentMoniker": "VelvetCakes.Api\\Models\\Component.cs",
+              "ToolTip": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Models\\Component.cs",
+              "RelativeToolTip": "VelvetCakes.Api\\Models\\Component.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-16T12:28:08.896Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ReviewDto.cs",
+              "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\DTOs\\ReviewDto.cs",
+              "RelativeDocumentMoniker": "VelvetCakes.Api\\DTOs\\ReviewDto.cs",
+              "ToolTip": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\DTOs\\ReviewDto.cs",
+              "RelativeToolTip": "VelvetCakes.Api\\DTOs\\ReviewDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-16T11:33:30.622Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "ProductsController.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Controllers\\ProductsController.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Controllers\\ProductsController.cs",
               "ToolTip": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Controllers\\ProductsController.cs",
               "RelativeToolTip": "VelvetCakes.Api\\Controllers\\ProductsController.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAkwFcAAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAALwAAAAAAAAAAAAuwM0AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-10T15:16:51.947Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-10T15:16:51.947Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 12,
               "Title": "YooKassaService.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\YooKassaService.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\YooKassaService.cs",
@@ -83,67 +126,57 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 1,
               "Title": "OrderDto.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\DTOs\\OrderDto.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\DTOs\\OrderDto.cs",
               "ToolTip": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\DTOs\\OrderDto.cs",
               "RelativeToolTip": "VelvetCakes.Api\\DTOs\\OrderDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-20T16:24:51.602Z"
+              "WhenOpened": "2026-05-20T16:24:51.602Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 0,
               "Title": "OrdersController.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Controllers\\OrdersController.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Controllers\\OrdersController.cs",
               "ToolTip": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Controllers\\OrdersController.cs",
               "RelativeToolTip": "VelvetCakes.Api\\Controllers\\OrdersController.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAANoAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAALIAAAAAAAAAAAAAANgAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-20T15:14:27.442Z"
+              "WhenOpened": "2026-05-20T15:14:27.442Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\appsettings.json",
-              "RelativeDocumentMoniker": "VelvetCakes.Api\\appsettings.json",
-              "ToolTip": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\appsettings.json",
-              "RelativeToolTip": "VelvetCakes.Api\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-05-20T14:25:45.981Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 4,
               "Title": "ReviewsController.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Controllers\\ReviewsController.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Controllers\\ReviewsController.cs",
               "ToolTip": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Controllers\\ReviewsController.cs",
               "RelativeToolTip": "VelvetCakes.Api\\Controllers\\ReviewsController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAA0AAAAAAAAAA==",
+              "ViewState": "AgIAABgAAAAAAAAAAAAowFoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-20T13:49:19.182Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 5,
               "Title": "Review.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Models\\Review.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Models\\Review.cs",
               "ToolTip": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Models\\Review.cs",
               "RelativeToolTip": "VelvetCakes.Api\\Models\\Review.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-20T13:49:00.733Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 11,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Controllers\\AuthController.cs",
@@ -155,7 +188,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 9,
               "Title": "EmailService.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\EmailService.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\EmailService.cs",
@@ -167,19 +200,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 8,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Program.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Program.cs",
               "ToolTip": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Program.cs",
               "RelativeToolTip": "VelvetCakes.Api\\Program.cs",
-              "ViewState": "AgIAACsAAAAAAAAAAAAUwHQAAAAKAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEcAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-21T07:10:25.046Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 10,
               "Title": "User.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Models\\User.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Models\\User.cs",

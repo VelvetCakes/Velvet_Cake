@@ -15,6 +15,8 @@ public partial class Component
 
     public decimal BasePricePerUnit { get; set; }
 
+    public bool IsFirstFree { get; set; } = false;
+
     public int? ComplexityPoints { get; set; }
 
     public bool? IsSeasonal { get; set; }

@@ -17,6 +17,8 @@ public partial class Review
 
     public bool IsApproved { get; set; } = false;
 
+    public int? ProductId { get; set; }
+
     public DateTime? CreatedAt { get; set; }
 
     public virtual User User { get; set; } = null!;

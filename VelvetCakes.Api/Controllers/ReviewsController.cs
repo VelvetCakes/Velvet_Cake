@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VelvetCakes.Api.Models;
 using System.ComponentModel.DataAnnotations;
+using VelvetCakes.Api.DTOs;
 
 namespace VelvetCakes.Api.Controllers;
 
@@ -74,6 +75,7 @@ public class ReviewsController : ControllerBase
                 UserId = userId,
                 AuthorName = dto.AuthorName ?? "Аноним",
                 Text = dto.Text,
+                Rating = dto.Rating,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -83,7 +85,6 @@ public class ReviewsController : ControllerBase
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Ошибка при создании отзыва: {ex.Message}");
             return StatusCode(500, "Произошла ошибка при сохранении отзыва.");
         }
     }
@@ -99,13 +100,4 @@ public class ReviewsController : ControllerBase
         await _db.SaveChangesAsync();
         return Ok();
     }
-}
-
-public class CreateReviewDto
-{
-    [Required(ErrorMessage = "Имя обязательно")]
-    public string AuthorName { get; set; } = string.Empty;
-
-    [Required(ErrorMessage = "Текст отзыва обязателен")]
-    public string Text { get; set; } = string.Empty;
 }

@@ -62,7 +62,6 @@ public class ProductsController : ControllerBase
 
             product.CreatedAt = DateTime.UtcNow;
 
-            // Если есть Base64 и он слишком большой, обрезаем (опционально)
             if (product.ImageBase64 != null && product.ImageBase64.Length > 1000000)
             {
                 Console.WriteLine($"Warning: ImageBase64 is large ({product.ImageBase64.Length} chars)");
@@ -104,24 +103,22 @@ public class ProductsController : ControllerBase
                 return NotFound(new { error = "Товар не найден" });
             }
 
-            // Обновляем поля по одному с проверкой
             existing.Name = updated.Name ?? existing.Name;
             existing.Description = updated.Description ?? existing.Description;
             existing.Price = updated.Price;
             existing.Weight = updated.Weight ?? existing.Weight;
             existing.Category = updated.Category ?? existing.Category;
 
-            // Обработка изображения - если пришёл новый Base64, сохраняем его
             if (!string.IsNullOrEmpty(updated.ImageBase64))
             {
                 existing.ImageBase64 = updated.ImageBase64;
-                existing.ImageUrl = null; // Очищаем старый URL при сохранении Base64
+                existing.ImageUrl = null;
                 Console.WriteLine($"ImageBase64 saved, length: {existing.ImageBase64.Length}");
             }
             else if (!string.IsNullOrEmpty(updated.ImageUrl))
             {
                 existing.ImageUrl = updated.ImageUrl;
-                existing.ImageBase64 = null; // Очищаем Base64 при сохранении URL
+                existing.ImageBase64 = null;
                 Console.WriteLine($"ImageUrl saved: {existing.ImageUrl}");
             }
 
@@ -165,23 +162,19 @@ public class ProductsController : ControllerBase
             if (file == null || file.Length == 0)
                 return BadRequest(new { error = "Файл не выбран" });
 
-            // Проверка типа файла
             var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
             if (!allowedExtensions.Contains(extension))
                 return BadRequest(new { error = "Неподдерживаемый формат файла. Разрешены: JPG, PNG, GIF, WEBP" });
 
-            // Ограничение размера (5 MB)
             if (file.Length > 5 * 1024 * 1024)
                 return BadRequest(new { error = "Файл слишком большой. Максимальный размер: 5 MB" });
 
-            // Конвертируем изображение в Base64
             using var memoryStream = new MemoryStream();
             await file.CopyToAsync(memoryStream);
             var imageBytes = memoryStream.ToArray();
             var base64String = Convert.ToBase64String(imageBytes);
 
-            // Определяем MIME тип
             var mimeType = file.ContentType;
             var dataUrl = $"data:{mimeType};base64,{base64String}";
 
@@ -211,21 +204,27 @@ public class ProductsController : ControllerBase
     {
         try
         {
-            var popularProducts = await _db.OrderItems
-                .Where(oi => oi.ProductId != null)
-                .GroupBy(oi => oi.ProductId)
-                .Select(g => new
+
+            var productsWithStats = await _db.Products
+                .Select(p => new
                 {
-                    ProductId = g.Key,
-                    OrderCount = g.Sum(oi => oi.Quantity)
+                    Product = p,
+                    OrderCount = _db.OrderItems.Where(oi => oi.ProductId == p.Id).Sum(oi => (int?)oi.Quantity) ?? 0,
+                    AvgRating = _db.Reviews.Where(r => r.ProductId == p.Id && r.IsApproved).Average(r => (double?)r.Rating) ?? 0,
+                    ReviewCount = _db.Reviews.Count(r => r.ProductId == p.Id && r.IsApproved)
                 })
-                .OrderByDescending(x => x.OrderCount)
-                .Take(limit)
-                .Join(_db.Products,
-                      pop => pop.ProductId,
-                      product => product.Id,
-                      (pop, product) => product)
                 .ToListAsync();
+
+            var popularProducts = productsWithStats
+                .Select(x => new
+                {
+                    x.Product,
+                    PopularityScore = (x.OrderCount * 0.6) + (x.AvgRating * 10 * 0.3) + (Math.Min(x.ReviewCount, 20) * 0.1)
+                })
+                .OrderByDescending(x => x.PopularityScore)
+                .Take(limit)
+                .Select(x => x.Product)
+                .ToList();
 
             if (popularProducts == null || popularProducts.Count == 0)
             {
