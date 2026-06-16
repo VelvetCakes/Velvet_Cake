@@ -9,6 +9,8 @@ public partial class Review
 
     public int UserId { get; set; }
 
+    public int? OrderId { get; set; }
+
     public string? AuthorName { get; set; }
 
     public string Text { get; set; } = null!;
@@ -22,4 +24,8 @@ public partial class Review
     public DateTime? CreatedAt { get; set; }
 
     public virtual User User { get; set; } = null!;
+
+    public virtual Order? Order { get; set; }
+
+    public virtual Product? Product { get; set; }
 }
