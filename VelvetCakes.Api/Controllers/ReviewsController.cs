@@ -52,22 +52,30 @@ public class ReviewsController : ControllerBase
     [Authorize(Roles = "manager")]
     public async Task<IActionResult> Approve(int id)
     {
-        var review = await _db.Reviews.FindAsync(id);
-        if (review == null) return NotFound();
-
-        review.IsApproved = true;
-        await _db.SaveChangesAsync();
-
-        _db.Notifications.Add(new Notification
+        try
         {
-            UserId = review.UserId,
-            Title = "Ваш отзыв опубликован!",
-            Text = "Спасибо за ваш отзыв! Он прошел модерацию и теперь виден на сайте.",
-            SentAt = DateTime.UtcNow
-        });
-        await _db.SaveChangesAsync();
+            var review = await _db.Reviews.FindAsync(id);
+            if (review == null) return NotFound();
 
-        return Ok(review);
+            review.IsApproved = true;
+            await _db.SaveChangesAsync();
+
+            _db.Notifications.Add(new Notification
+            {
+                UserId = review.UserId,
+                Title = "Ваш отзыв опубликован!",
+                Text = "Спасибо за ваш отзыв! Он прошел модерацию и теперь виден на сайте.",
+                SentAt = DateTime.UtcNow
+            });
+            await _db.SaveChangesAsync();
+
+            return Ok(review);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Approve error: {ex.Message}");
+            return StatusCode(500, new { error = ex.Message });
+        }
     }
 
     [HttpDelete("{id}")]
