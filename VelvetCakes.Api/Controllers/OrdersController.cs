@@ -177,6 +177,27 @@ public class OrdersController : ControllerBase
         return Ok(order);
     }
 
+    [HttpGet("{id}/payment-status")]
+    [Authorize(Roles = "user")]
+    public async Task<IActionResult> GetPaymentStatus(int id)
+    {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var order = await _db.Orders.FindAsync(id);
+
+        if (order == null)
+            return NotFound(new { error = "Заказ не найден" });
+
+        if (order.UserId != userId)
+            return Forbid();
+
+        return Ok(new
+        {
+            status = order.Status,
+            paidAmount = order.PaidAmount,
+            totalAmount = order.TotalAmount
+        });
+    }
+
     [HttpPost("{id}/payment")]
     [Authorize(Roles = "user")]
     public async Task<IActionResult> CreatePayment(int id, [FromBody] PaymentRequestDto dto)
@@ -205,7 +226,8 @@ public class OrdersController : ControllerBase
             order.TotalAmount,
             $"Заказ #{order.Id} в Velvet",
             returnUrl,
-            "embedded"
+            "embedded",
+            order.Id
         );
 
         if (paymentResponse == null || string.IsNullOrEmpty(paymentResponse.Confirmation?.ConfirmationToken))

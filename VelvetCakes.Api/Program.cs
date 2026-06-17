@@ -14,12 +14,11 @@ builder.Logging.AddConsole();
 builder.WebHost.UseWebRoot("wwwroot");
 builder.WebHost.UseContentRoot(Directory.GetCurrentDirectory());
 
-// === НАСТРОЙКА CORS - ИСПРАВЛЕННАЯ ===
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()      // Разрешаем любые источники для теста
+        policy.AllowAnyOrigin() 
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
@@ -74,7 +73,6 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(optio
 
 var app = builder.Build();
 
-// === ИСПОЛЬЗУЕМ CORS ПЕРЕД ДРУГИМИ МИДЛВЕРАМИ ===
 app.UseCors("AllowAll");
 
 var wwwrootPath = app.Environment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");

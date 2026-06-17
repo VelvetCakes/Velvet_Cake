@@ -23,6 +23,7 @@ public class CreatePaymentRequest
     public string? Description { get; set; }
     public YooKassaConfirmationData Confirmation { get; set; } = new();
     public string? Capture { get; set; }
+    public Dictionary<string, string>? Metadata { get; set; }
 }
 
 public class YooKassaAmount
@@ -39,7 +40,7 @@ public class YooKassaConfirmationData
 
 public interface IYooKassaService
 {
-    Task<YooKassaPaymentResponse?> CreatePaymentAsync(decimal amount, string description, string returnUrl, string confirmationType = "redirect");
+    Task<YooKassaPaymentResponse?> CreatePaymentAsync(decimal amount, string description, string returnUrl, string confirmationType = "redirect", int orderId = 0);
 }
 
 public class YooKassaService : IYooKassaService
@@ -61,11 +62,11 @@ public class YooKassaService : IYooKassaService
         _httpClient.BaseAddress = new Uri("https://api.yookassa.ru/v3/");
     }
 
-    public async Task<YooKassaPaymentResponse?> CreatePaymentAsync(decimal amount, string description, string returnUrl, string confirmationType = "redirect")
+    public async Task<YooKassaPaymentResponse?> CreatePaymentAsync(decimal amount, string description, string returnUrl, string confirmationType = "redirect", int orderId = 0)
     {
         try
         {
-            _logger.LogInformation($"Creating payment: amount={amount}, description={description}, returnUrl={returnUrl}, type={confirmationType}");
+            _logger.LogInformation($"Creating payment: amount={amount}, description={description}, returnUrl={returnUrl}, type={confirmationType}, orderId={orderId}");
 
             var request = new CreatePaymentRequest
             {
@@ -76,7 +77,11 @@ public class YooKassaService : IYooKassaService
                     Type = confirmationType,
                     ReturnUrl = returnUrl
                 },
-                Capture = "true"
+                Capture = "true",
+                Metadata = new Dictionary<string, string>
+                {
+                    { "orderId", orderId.ToString() }
+                }
             };
 
             var jsonRequest = JsonSerializer.Serialize(request);
