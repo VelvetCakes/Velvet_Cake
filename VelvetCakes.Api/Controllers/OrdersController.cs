@@ -41,12 +41,11 @@ public class OrdersController : ControllerBase
         if (user == null) return Unauthorized();
 
         decimal totalWithDelivery = dto.Total;
-        var initialStatus = dto.PaymentMethod == "online" ? "Ожидает оплаты" : "Новый";
 
         var order = new Order
         {
             UserId = userId,
-            Status = initialStatus,
+            Status = "Новый",
             TotalAmount = totalWithDelivery,
             DeliveryAddress = dto.DeliveryAddress,
             Comments = dto.Comments,
@@ -98,11 +97,6 @@ public class OrdersController : ControllerBase
             _db.OrderItems.Add(orderItem);
         }
         await _db.SaveChangesAsync();
-
-        if (dto.PaymentMethod == "online")
-        {
-            return Ok(new { order, requiresPayment = true });
-        }
 
         _db.Notifications.Add(new Notification
         {
@@ -176,38 +170,6 @@ public class OrdersController : ControllerBase
         return Ok(order);
     }
 
-    [HttpGet("{id}/payment-status")]
-    [Authorize(Roles = "user")]
-    public async Task<IActionResult> GetPaymentStatus(int id)
-    {
-        try
-        {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-            var order = await _db.Orders.FindAsync(id);
-
-            if (order == null)
-                return NotFound(new { error = "Заказ не найден" });
-
-            if (order.UserId != userId)
-                return Forbid();
-
-            var isPaid = order.Status != "Ожидает оплаты";
-
-            return Ok(new
-            {
-                status = order.Status,
-                paidAmount = order.PaidAmount,
-                totalAmount = order.TotalAmount,
-                isPaid = isPaid
-            });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError($"Check payment error: {ex.Message}");
-            return StatusCode(500, new { error = ex.Message });
-        }
-    }
-
     [HttpPost("{id}/payment")]
     [Authorize(Roles = "user")]
     public async Task<IActionResult> CreatePayment(int id, [FromBody] PaymentRequestDto dto)
@@ -227,7 +189,7 @@ public class OrdersController : ControllerBase
         if (order.PaidAmount > 0)
             return BadRequest(new { error = "Заказ уже оплачен" });
 
-        if (order.Status != "Ожидает оплаты")
+        if (order.Status != "Новый")
             return BadRequest(new { error = "Заказ не может быть оплачен. Текущий статус: " + order.Status });
 
         var returnUrl = dto.ReturnUrl ?? $"{_config["FrontendUrl"]}/payment.html?orderId={order.Id}";
@@ -252,6 +214,38 @@ public class OrdersController : ControllerBase
             paymentId = paymentResponse.Id,
             status = paymentResponse.Status
         });
+    }
+
+    [HttpGet("{id}/payment-status")]
+    [Authorize(Roles = "user")]
+    public async Task<IActionResult> GetPaymentStatus(int id)
+    {
+        try
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var order = await _db.Orders.FindAsync(id);
+
+            if (order == null)
+                return NotFound(new { error = "Заказ не найден" });
+
+            if (order.UserId != userId)
+                return Forbid();
+
+            var isPaid = order.PaidAmount > 0 || order.Status != "Новый";
+
+            return Ok(new
+            {
+                status = order.Status,
+                paidAmount = order.PaidAmount,
+                totalAmount = order.TotalAmount,
+                isPaid = isPaid
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Check payment error: {ex.Message}");
+            return StatusCode(500, new { error = ex.Message });
+        }
     }
 
     public class PaymentRequestDto

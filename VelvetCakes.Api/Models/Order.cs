@@ -9,7 +9,7 @@ public partial class Order
 
     public int UserId { get; set; }
 
-    public string Status { get; set; } = null!;
+    public string Status { get; set; } = "Новый";
 
     public decimal TotalAmount { get; set; }
 

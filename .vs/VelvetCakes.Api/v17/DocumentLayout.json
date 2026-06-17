@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|c:\\users\\anjelika\\desktop\\velvet\\velvetcake\\velvetcakes.api\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A79B57D8-ADB1-4838-9BE6-BD400652E81C}|VelvetCakes.Api\\VelvetCakes.Api.csproj|solutionrelative:velvetcakes.api\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -66,11 +70,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
+              "Title": "Order.cs",
+              "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Models\\Order.cs",
+              "RelativeDocumentMoniker": "VelvetCakes.Api\\Models\\Order.cs",
+              "ToolTip": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Models\\Order.cs",
+              "RelativeToolTip": "VelvetCakes.Api\\Models\\Order.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-17T09:40:25.952Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "WebhooksController.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Controllers\\WebhooksController.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Controllers\\WebhooksController.cs",
@@ -82,7 +99,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "ComponentsController.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Controllers\\ComponentsController.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Controllers\\ComponentsController.cs",
@@ -94,7 +111,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "Component.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Models\\Component.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Models\\Component.cs",
@@ -106,7 +123,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "ReviewDto.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\DTOs\\ReviewDto.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\DTOs\\ReviewDto.cs",
@@ -118,7 +135,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "ProductsController.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Controllers\\ProductsController.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Controllers\\ProductsController.cs",
@@ -130,7 +147,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "YooKassaService.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\YooKassaService.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\YooKassaService.cs",
@@ -142,7 +159,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "OrderDto.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\DTOs\\OrderDto.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\DTOs\\OrderDto.cs",
@@ -154,20 +171,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "OrdersController.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Controllers\\OrdersController.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Controllers\\OrdersController.cs",
               "ToolTip": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Controllers\\OrdersController.cs",
               "RelativeToolTip": "VelvetCakes.Api\\Controllers\\OrdersController.cs",
-              "ViewState": "AgIAAH0AAAAAAAAAAAAwwB4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-20T15:14:27.442Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "ReviewsController.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Controllers\\ReviewsController.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Controllers\\ReviewsController.cs",
@@ -179,7 +196,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "Review.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Models\\Review.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Models\\Review.cs",
@@ -191,7 +208,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Controllers\\AuthController.cs",
@@ -203,7 +220,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "EmailService.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\EmailService.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\EmailService.cs",
@@ -215,7 +232,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Program.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Program.cs",
@@ -227,7 +244,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "User.cs",
               "DocumentMoniker": "C:\\Users\\Anjelika\\Desktop\\Velvet\\VelvetCake\\VelvetCakes.Api\\Models\\User.cs",
               "RelativeDocumentMoniker": "VelvetCakes.Api\\Models\\User.cs",
