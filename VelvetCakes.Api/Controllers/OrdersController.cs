@@ -41,7 +41,6 @@ public class OrdersController : ControllerBase
         if (user == null) return Unauthorized();
 
         decimal totalWithDelivery = dto.Total;
-
         var initialStatus = dto.PaymentMethod == "online" ? "Ожидает оплаты" : "Новый";
 
         var order = new Order
@@ -181,21 +180,32 @@ public class OrdersController : ControllerBase
     [Authorize(Roles = "user")]
     public async Task<IActionResult> GetPaymentStatus(int id)
     {
-        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-        var order = await _db.Orders.FindAsync(id);
-
-        if (order == null)
-            return NotFound(new { error = "Заказ не найден" });
-
-        if (order.UserId != userId)
-            return Forbid();
-
-        return Ok(new
+        try
         {
-            status = order.Status,
-            paidAmount = order.PaidAmount,
-            totalAmount = order.TotalAmount
-        });
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var order = await _db.Orders.FindAsync(id);
+
+            if (order == null)
+                return NotFound(new { error = "Заказ не найден" });
+
+            if (order.UserId != userId)
+                return Forbid();
+
+            var isPaid = order.Status != "Ожидает оплаты";
+
+            return Ok(new
+            {
+                status = order.Status,
+                paidAmount = order.PaidAmount,
+                totalAmount = order.TotalAmount,
+                isPaid = isPaid
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Check payment error: {ex.Message}");
+            return StatusCode(500, new { error = ex.Message });
+        }
     }
 
     [HttpPost("{id}/payment")]
